@@ -1,0 +1,37 @@
+---
+title: "STAT 580 Final Project"
+output: github_document
+
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+# sample data for testing purposes
+# data <- starwars
+
+# This review function takes a data set and produces a summary table of the variables. The benefit of this is that the function only takes one argument, making it easy for the user to use. The summary output lists all the variables by row along with their class type, missing count, unique count, and proportion of unique values (a higher proportion means there are more unique values.)
+
+review <- function(data){
+  data <- data %>% select(-where(is.list))
+  vars <- names(data)
+  variable_type <- sapply(vars,
+                        function(x) is(data[, x][[1]])[1])
+  missing_count <- sapply(vars,
+                        function(x) sum(!complete.cases(data[, x])))
+  unique_count <- sapply(vars,
+                       function(x) n_distinct(data[, x]))
+  data_count <- nrow(data)
+  tibble(variables = vars,
+         class = variable_type,
+         missing_count = missing_count,
+         unique_count = unique_count,
+         unique_proportion = unique_count / data_count)
+}
+
+review(data)
+```
+
+
