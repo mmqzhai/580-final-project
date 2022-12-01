@@ -31,9 +31,11 @@ review <- function (data){
 review(data)
 ```
 
+
 ```{r}
 
 # This split function takes a data set and separates each of the columns into its own variable.
+# Should have warning that it'll overwrite global environment
 
 split <- function(data){
   vars <- names(data)
@@ -43,11 +45,10 @@ split <- function(data){
   }
   for(i in 1:ncol(data)){
     print(vars[i])
-  }
-}
-
-for (i in colnames(data)) {
-    assign(i, data[, i])
+    }
+  for (i in colnames(data)) {
+    assign(i, data[, i], envir = .GlobalEnv)
+    }
 }
 
 split(data)
